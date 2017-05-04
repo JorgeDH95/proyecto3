@@ -1,0 +1,1135 @@
+// variables 
+//imagenes
+PImage pantalla1;
+PImage pantalla2;
+PImage pantalla3;
+PImage ganaste;
+PImage perdiste;
+
+//cartas
+Mounstro lobo;
+Mounstro mariana;
+Mounstro pluma;
+Mounstro wolverine;
+Mounstro sonic;
+
+
+//pong
+int posicionBarraJugador = 100;
+int largoDeVentana = 0;
+int altoDeVentana = 0;
+int anchoDeBarra = 20;
+int largoDeBarra = 80;
+float posicionBarraCPU = 150;
+boolean presionandoArriba = false; 
+boolean presionandoAbajo = false;
+float posicionXPelota= 0;
+float posicionYPelota= 0;
+float deltaX = 0;
+float deltaY = 0;
+int tamanoPelota = 20;
+int velocidad = 7; 
+float angulo = 0; 
+color jugador = color(255,255,255);
+//general
+int pantalla = 0;
+int hpAmigo = 200;
+int hpMaquina = 700;
+int hpMaquina2 = 200;
+void setup(){
+
+  size(1080,720);
+  pantalla1 = loadImage("Pantalla1.png");
+  pantalla2= loadImage("Pantalla2.png");
+  pantalla3 = loadImage("Pantalla3.png");
+  ganaste = loadImage("Ganaste.png");
+  perdiste = loadImage("Perdiste.png");
+  
+
+  largoDeVentana = width;
+altoDeVentana = height;
+posicionXPelota = largoDeVentana/2;
+posicionYPelota =  altoDeVentana/2;
+
+   lobo = new Mounstro("lobo",2,2500,2000,1,0);
+  pluma =  new Mounstro("pluma",2,2500,2000,1,1);
+  mariana = new Mounstro("mariana",2,2500,2000,1,2);
+  wolverine = new Mounstro("wolverine",2,2500,2000,1,3);
+  sonic =  new Mounstro("sonic",2,2500,2000,1,4);
+  }
+  
+  
+  void draw(){
+    noStroke();
+
+    switch(pantalla){
+    
+    case 0:
+    
+    pushMatrix();
+    scale(.24);
+     image (pantalla1,0,0);
+     popMatrix();
+    if (key == CODED) {
+    if (keyCode == CONTROL) {
+      pantalla +=1;
+    }
+    }
+     hpAmigo = 200;
+     hpMaquina = 700;
+     hpMaquina2 = 200;
+    break;
+    case 1:
+     pushMatrix();
+    scale(.24);
+     image (pantalla3,0,0);
+     popMatrix();
+    break;
+    
+    case 2:
+ //pantalla2 = loadImage("Pantalla2.png");
+  pushMatrix();
+    scale(.24);
+   // translate(posicionBarraJugador,posicionBarraJugador);
+     image (pantalla2,0,0);
+     popMatrix();
+          
+    break;
+    
+    case 3:
+    
+   
+background(40);
+pushMatrix();
+scale(0.4);
+translate(0,-80);
+ wolverine.Dibujar();
+ popMatrix();
+ 
+ pushMatrix();
+scale(0.4);
+translate(2100,10);
+ mariana.Dibujar();
+ popMatrix();
+jugador = color(248,225,46);
+   pong();
+fill(112,220,35);
+rect(140,60,hpAmigo,15);
+fill(112,220,35);
+rect(hpMaquina,60,hpMaquina2,15);
+    if(hpMaquina2<= 0){
+         pantalla = 8;
+    }
+   
+    
+     if(hpAmigo<= 0){
+      pantalla = 9;
+    }
+    break;
+    
+    
+        case 4:
+       
+background(40);
+pushMatrix();
+scale(0.4);
+translate(-250,10);
+ mariana.Dibujar();
+ popMatrix(); 
+ pushMatrix();
+scale(0.38);
+translate(1850,-80);
+noStroke();
+ lobo.Dibujar();
+ popMatrix();
+jugador = color(51,90,157);
+   pong();
+   fill(112,220,35);
+rect(140,60,hpAmigo,15);
+fill(112,220,35);
+rect(hpMaquina+20,60,hpMaquina2+20,15);
+    if(hpMaquina2<= 0){
+         pantalla = 8;
+    }
+   
+    
+     if(hpAmigo<= 0){
+      pantalla = 9;
+    }
+
+    break;
+      
+        
+        case 5:
+    
+   background(40);
+   pushMatrix();
+scale(0.38);
+translate(-600,-80);
+ lobo.Dibujar();
+ popMatrix(); 
+ pushMatrix();
+scale(0.4);
+translate(2250,-280);
+noStroke();
+ pluma.Dibujar();
+ popMatrix();
+jugador = color(254,247,174);
+   pong();
+    fill(112,220,35);
+rect(140,60,hpAmigo,15);
+fill(112,220,35);
+rect(hpMaquina+20,60,hpMaquina2+20,15);
+    if(hpMaquina2<= 0){
+         pantalla = 8;
+    }
+   
+    
+     if(hpAmigo<= 0){
+      pantalla = 9;
+    }
+
+
+    break;
+    
+        case 6:
+     
+background(40);
+ pushMatrix();
+scale(0.4);
+translate(-400,-280);
+ sonic.Dibujar();
+ popMatrix(); 
+ pushMatrix();
+scale(0.4);
+translate(2300,-80);
+ wolverine.Dibujar();
+ popMatrix();
+jugador = color(255,0,17);
+   pong();
+   fill(112,220,35);
+rect(140,60,hpAmigo,15);
+fill(112,220,35);
+rect(hpMaquina+20,60,hpMaquina2+20,15);
+    if(hpMaquina2<= 0){
+         pantalla = 8;
+    }
+   
+    
+     if(hpAmigo<= 0){
+      pantalla = 9;
+    }
+   
+    break;
+    
+            case 7:
+     
+background(40);
+pushMatrix();
+scale(0.4);
+translate(-150,-280);
+noStroke();
+ pluma.Dibujar();
+ popMatrix(); 
+ pushMatrix();
+scale(0.4);
+translate(1970,-270);
+ sonic.Dibujar();
+ popMatrix();
+jugador = color(187,197,50);
+   pong();
+   
+      fill(112,220,35);
+rect(140,60,hpAmigo,15);
+fill(112,220,35);
+rect(hpMaquina+20,60,hpMaquina2+20,15);
+    if(hpMaquina2<= 0){
+         pantalla = 8;
+    }
+   
+    
+     if(hpAmigo<= 0){
+      pantalla = 9;
+    }
+   
+    break;
+    
+    case 8:
+     pushMatrix();
+    scale(.24);
+     image (ganaste,0,0);
+     popMatrix();
+
+     break;
+    
+        case 9:
+     pushMatrix();
+    scale(.24);
+     image (perdiste,0,0);
+     popMatrix();
+     if (keyPressed){
+      if (key == 'x' || key == 'X'){
+      pantalla -= 9; 
+      }
+    }
+    break;
+    
+    }
+    
+    }
+    
+    void keyPressed(){
+  //si estoy presionando la tecla w, presionandoArriba = true;
+  if(key == 'u' || key == 'U' ){
+    presionandoArriba = true;
+  }
+  if(key == 'j' || key == 'J' ){
+    presionandoAbajo = true;
+  }  
+}
+
+void keyReleased() {
+  if(key == 'u' || key == 'U' ){
+    presionandoArriba = false;
+  }
+  if(key == 'j' || key == 'J' ){
+    presionandoAbajo = false;
+  }
+
+
+
+      if (key == 'w' || key == 'W'){
+      pantalla = 3; 
+      }
+      
+      if (key == 'm' || key == 'M'){
+      pantalla = 4; 
+      }
+      
+      if (key == 'l' || key == 'L'){
+      pantalla = 5; 
+      }
+      
+       if (key == 's' || key == 'S'){
+      pantalla = 6; 
+      }
+      
+       if (key == 'p' || key == 'P'){
+      pantalla = 7; 
+      }
+      
+       if (key == 'x' || key == 'X'){
+      pantalla = 0; 
+      }
+}
+    
+
+void verificarBotones(){
+  if (presionandoArriba == true){
+    posicionBarraJugador -=5;
+  }  
+  if (presionandoAbajo == true){
+    posicionBarraJugador +=5;
+  }
+}
+
+void verificarLimitesDeBarra(){
+  if(posicionBarraJugador <= 120){
+    posicionBarraJugador = 120;
+  }
+  if(posicionBarraJugador >= (altoDeVentana - largoDeBarra)){
+    posicionBarraJugador = (altoDeVentana - largoDeBarra);
+  }
+}
+
+void movimientoPelota () {
+  deltaX = cos(angulo) * velocidad;
+  deltaY = sin(angulo) * velocidad; 
+  posicionXPelota += deltaX; 
+  posicionYPelota += deltaY;
+  // detectar colisión
+  //si la posición de la pelota pasa el tamaño de la ventana
+  //debe de rebotar
+  if (posicionYPelota <= 110){
+    angulo = angulo * -1; 
+  }
+  if (posicionYPelota >= altoDeVentana){
+    angulo = angulo * -1;  
+  }
+  
+  if (posicionXPelota <= 0){
+    posicionXPelota =  largoDeVentana/2;
+    posicionYPelota =  altoDeVentana/2;
+    angulo = random(PI*2);
+    print("pierdes");
+    hpAmigo-=30;
+    
+  }
+  if (posicionXPelota >= largoDeVentana){
+    posicionXPelota =  largoDeVentana/2;
+    posicionYPelota =  altoDeVentana/2; 
+    angulo = random(PI*2);
+     print("ganas");
+     hpMaquina+=30;
+     hpMaquina2 -=30;
+     
+  }
+  
+  if ((posicionXPelota <= 20 + anchoDeBarra ) && ((posicionYPelota >= posicionBarraJugador) && (posicionYPelota <= posicionBarraJugador + largoDeBarra ))){
+    angulo = random(-QUARTER_PI, QUARTER_PI); //un numero aleatorio entre -QUARTER_PI y QUARTER_PI;
+    print("bien");
+  }
+  
+  if ((posicionXPelota >= largoDeVentana-20-anchoDeBarra ) && ((posicionYPelota >= posicionBarraCPU) && (posicionYPelota <= posicionBarraCPU + largoDeBarra ))){
+    angulo = random(PI - QUARTER_PI, PI + QUARTER_PI); //un numero aleatorio entre -QUARTER_PI y QUARTER_PI;
+    print("bien");
+  }
+  
+}
+
+void pong(){
+  //verifica si el usario está presionando las teclas de control
+  verificarBotones();
+  //verifica que la barra no se salga del canvas
+  verificarLimitesDeBarra();
+  
+  
+  noStroke();
+  movimientoPelota();
+  // Si la pelota va hacia Barra CPU
+  if ((angulo <= HALF_PI) && (angulo >= -HALF_PI)){
+      // Si la pelota está arriba, la barra se mueve hacia arriba
+      if(posicionYPelota>posicionBarraCPU){
+        posicionBarraCPU += 3.3;
+      }
+      if(posicionYPelota<posicionBarraCPU){
+        posicionBarraCPU -= 3.3;
+      }
+      //Si la pelota está abajo, la barra se mueve hacia abajo
+  }
+
+  fill(jugador);
+  rect(20,posicionBarraJugador,anchoDeBarra,largoDeBarra);
+  fill(255);
+  rect(largoDeVentana-20-anchoDeBarra, posicionBarraCPU, anchoDeBarra,largoDeBarra);
+  ellipse(posicionXPelota,posicionYPelota,tamanoPelota,tamanoPelota);
+
+  
+}
+
+void mouseReleased(){
+  pantalla = 2;
+}
+
+class Mounstro {
+  String nombre;
+  int nivel;
+  int ataque;
+  int defensa;
+  int colorCarta;
+  int dibujo;
+  
+  Mounstro(String nombre_, int nivel_, int ataque_,int defensa_, int colorCarta_, int dibujo_){
+    nombre = nombre_;
+    nivel = nivel_;
+    ataque = ataque_;
+    defensa = defensa_;
+    colorCarta = colorCarta_;
+    dibujo = dibujo_;
+  }
+  void Dibujar(){
+  switch(dibujo){
+    
+    case 0:
+    // LOBO
+ pushMatrix();
+ translate(700, 100);
+ scale(0.7);
+ fill(230);
+ rect(80,270,10,10); rect(90,270,10,10); rect(90,280,10,10); rect(210,270,10,10); rect(210,280,10,10); rect(220,270,10,10);
+    for (int i = 60; i < 250; i = i+10) {
+  for (int j = 120; j < 270; j = j+10) {
+   rect(i, j,10,10);
+   
+  }
+ } 
+     for (int i = 100; i < 210; i = i+10) {
+  for (int j = 270; j < 330; j = j+10) {
+   rect(i, j,10,10);
+  }
+  } 
+       for (int i = 110; i < 200; i = i+10) {
+  for (int j = 330; j < 350; j = j+10) {
+   rect(i, j,10,10);
+   
+  }
+ } 
+       for (int i = 30; i < 60; i = i+10) {
+  for (int j = 200; j < 260; j = j+10) {
+   rect(i, j,10,10);
+   rect(i+220,j,10,10);
+  }
+ } 
+for (int i = 40; i < 80; i = i+10) {
+   rect(70, i,10,10);
+   rect(230, i,10,10);
+ } 
+ 
+ for (int i = 50; i < 120; i = i+10) {
+   rect(80, i,10,10);
+   rect(220, i,10,10);
+ } 
+  for (int i = 70; i < 110; i = i+10) {
+   rect(90, i,10,10);
+   rect(210, i,10,10);
+ } 
+ 
+ for (int i = 90; i < 110; i = i+10) {
+   rect(100, i,10,10);
+   rect(200, i,10,10);
+ } 
+ for (int i = 180; i < 200; i = i+10) {
+   rect(50, i,10,10);
+   rect(250, i,10,10);
+ } 
+ 
+  for (int i = 230; i < 250; i = i+10) {
+   rect(20, i,10,10);
+   rect(280, i,10,10);
+ }
+  for (int i = 130; i < 180; i = i+10) {
+   rect(i, 350,10,10);
+   
+ }
+   for (int i = 140; i < 170; i = i+10) {
+   rect(i, 360,10,10);
+   
+ }
+ //NEGRO
+ fill(0);
+ rect(70,30,10,10); rect(80,40,10,10); rect(30,200,10,10);rect(30,210,10,10);rect(30,220,10,10);rect(20,220,10,10);rect(20,250,10,10);rect(30,250,10,10);rect(40,260,10,10);
+ rect(50,260,10,10);rect(60,260,10,10);rect(60,270,10,10);rect(70,270,10,10);rect(80,280,10,10);rect(90,290,10,10);rect(100,300,10,10);rect(110,310,10,10);rect(120,320,10,10);
+ rect(130,320,10,10);rect(140,330,10,10); rect(150,340,10,10); rect(160,350,10,10);rect(170,360,10,10);rect(120,350,10,10);rect(130,360,10,10);rect(140,370,10,10);
+ rect(150,370,10,10);rect(160,370,10,10); rect(80,240,10,10); rect(80,240,10,10);rect(90,250,10,10);rect(90,250,10,10);rect(100,250,10,10);rect(110,260,10,10);
+ rect(120,270,10,10);rect(130,280,10,10);rect(140,290,10,10);rect(150,300,10,10);rect(160,300,10,10);rect(170,310,10,10);rect(180,320,10,10);rect(90,110,10,10);
+ rect(100,110,10,10);rect(120,120,10,10);rect(130,110,10,10);rect(140,110,10,10);rect(150,110,10,10);rect(160,110,10,10);rect(170,110,10,10);rect(180,120,10,10);
+ rect(200,110,10,10);rect(210,110,10,10);rect(280,220,10,10);rect(270,210,10,10);rect(270,200,10,10);rect(280,250,10,10);rect(270,250,10,10);rect(260,260,10,10);
+ rect(250,260,10,10);rect(240,260,10,10);rect(230,270,10,10); rect(220,270,10,10);rect(220,280,10,10);rect(210,290,10,10);rect(200,280,10,10);rect(190,270,10,10);
+ rect(180,260,10,10);rect(200,250,10,10);rect(210,250,10,10);rect(220,240,10,10); rect(230,200,10,10);rect(220,200,10,10);rect(210,200,10,10);rect(200,210,10,10);
+ rect(220,190,10,10);rect(80,200,10,10);rect(90,200,10,10);rect(100,210,10,10);rect(50,190,10,10);rect(60,200,10,10);rect(60,230,10,10);rect(60,240,10,10);rect(60,250,10,10);
+ rect(50,230,10,10);rect(50,240,10,10);rect(50,250,10,10);rect(40,230,10,10);rect(70,250,10,10);rect(210,260,10,10);rect(250,250,10,10);rect(250,240,10,10);rect(260,230,10,10);
+ rect(260,220,10,10);rect(80,120,10,10);rect(220,120,10,10);rect(180,350,10,10);rect(220,40,10,10);rect(230,30,10,10);
+    for (int i = 10; i < 130; i = i+10) {
+   rect(50, i,10,10);
+   rect(250, i,10,10);  
+  
+ }
+    for (int i = 20; i < 160; i = i+10) {
+   rect(60, i,10,10);
+   rect(240, i,10,10);  
+ }
+    for (int i = 80; i < 140; i = i+10) {
+   rect(70, i,10,10); 
+   rect(230, i,10,10);  
+ }
+     for (int i = 50; i < 70; i = i+10) {
+   rect(90, i,10,10); 
+   rect(210, i,10,10);  
+ }
+      for (int i = 70; i < 90; i = i+10) {
+   rect(100, i,10,10); 
+   rect(200, i,10,10);  
+ }
+      for (int i = 90; i < 120; i = i+10) {
+   rect(110, i,10,10); 
+   rect(190, i,10,10);  
+ }
+      for (int i = 150; i < 180; i = i+10) {
+   rect(50, i,10,10); 
+   rect(250, i,10,10);  
+ }
+ 
+     for (int i = 180; i < 200; i = i+10) {
+   rect(40, i,10,10); 
+   rect(260, i,10,10);  
+ }
+      for (int i = 230; i < 250; i = i+10) {
+   rect(10, i,10,10); 
+   rect(290, i,10,10);  
+ }
+       for (int i = 300; i < 330; i = i+10) {
+   rect(100, i,10,10); 
+   rect(200, i,10,10);  
+ }
+        for (int i = 300; i < 330; i = i+10) {
+   rect(100, i,10,10); 
+   rect(200, i,10,10);  
+ }
+        for (int i = 330; i < 350; i = i+10) {
+   rect(110, i,10,10); 
+   rect(190, i,10,10);  
+ }
+         for (int i = 210; i < 240; i = i+10) {
+   rect(70, i,10,10); 
+   rect(230, i,10,10);  
+ }
+          for (int i = 220; i < 250; i = i+10) {
+   rect(110, i,10,10); 
+   rect(190, i,10,10);  
+ }
+ //OJOS
+ //AZUL
+ fill(229,204,255);
+           for (int i = 210; i < 240; i = i+10) {
+   rect(80, i,10,10); 
+   rect(220, i,10,10);  
+ }
+            for (int i = 210; i < 250; i = i+10) {
+   rect(90, i,10,10); 
+   rect(210, i,10,10);  
+ }
+             for (int i = 220; i < 250; i = i+10) {
+   rect(100, i,10,10); 
+   rect(200, i,10,10);  
+ }
+ popMatrix();
+    break; 
+    
+      case 1:
+//PLUMA
+pushMatrix();
+translate(210,300);
+ scale(1.6);
+ noStroke();
+ 
+    //BLANCO
+    fill(255);
+    rect(40,40,10,10);rect(40,30,10,10);rect(30,100,10,10);rect(40,100,10,10);rect(50,100,10,10);
+        for (int i = 20; i < 70; i = i+10) {
+     for (int j = 70; j < 100; j = j+10) {
+      rect(i, j,10,10);
+     }
+    }
+        for (int i = 30; i < 60; i = i+10) {
+     for (int j = 50; j < 70; j = j+10) {
+      rect(i, j,10,10);
+     }
+    }
+//NEGRO
+fill(0);rect(40,70,10,10); rect(40,90,10,10);rect(20,100,10,10);rect(60,100,10,10);rect(10,110,10,10);rect(70,110,10,10);
+
+       for (int i = 70; i < 100; i = i+10) {
+     rect(10,i,10,10);
+     rect(70,i,10,10);   
+   }
+    for (int i = 50; i < 70; i = i+10) {
+     rect(20,i,10,10);
+     rect(60,i,10,10); 
+     rect(40,i,10,10);   
+   }
+       for (int i = 30; i < 50; i = i+10) {
+     rect(30,i,10,10);
+     rect(50,i,10,10);   
+   }
+       for (int i = 10; i < 30; i = i+10) {
+     rect(40,i,10,10);
+     
+   }
+    for (int i = 20; i < 70; i = i+10) {
+     for (int j = 110; j < 150; j = j+10) {
+      rect(i, j,10,10);
+     }
+    }
+    popMatrix();
+    break; 
+    
+        case 2:
+        //MARIANA
+  //Naranja
+  //cabeza
+  pushMatrix();
+  translate(300,15);
+  noStroke();
+ 
+   scale(0.8);
+  fill(18,15,6);
+  
+  rect(80,50,10,10);rect(180,50,10,10);rect(130,20,10,10);rect(130,30,10,10);rect(140,20,10,10);rect(80,140,10,10);rect(80,140,10,10);rect(180,140,10,10);rect(180,180,10,10);
+  rect(80,180,10,10);
+  
+ for (int i = 90; i < 180; i = i+10) {
+  for (int j = 40; j < 140; j = j+10) {
+   rect(i, j,10,10);
+  }
+ }
+  for (int i = 60; i < 90; i = i+10) {
+  for (int j = 80; j < 140; j = j+10) {
+   rect(i, j,10,10);
+   rect(i+120,j,10,10);
+  }
+ }
+  for (int i = 70; i < 90; i = i+10) {
+  for (int j = 60; j < 80; j = j+10) {
+   rect(i, j,10,10);
+   rect(i+110,j,10,10);
+  }
+ }
+ for (int i = 170; i < 220; i = i+10) {
+  rect(70,i,10,10);
+  rect(190,i,10,10);
+   }
+  for (int i = 190; i < 240; i = i+10) {
+  rect(60,i,10,10);  
+  rect(200,i,10,10); 
+   }
+  for (int i = 200; i < 250; i = i+10) {
+  rect(50,i,10,10);  
+   rect(210,i,10,10); 
+   }  
+   
+     for (int i = 200; i < 230; i = i+10) {
+  rect(30,i,10,10); 
+  rect(230,i,10,10);
+   }
+     for (int i = 200; i < 220; i = i+10) {
+  rect(40,i,10,10); 
+  rect(220,i,10,10); 
+   }  
+ //PIEL
+ fill(253,213,152);
+ rect(140,120,10,10); rect(130,130,10,10); rect(140,130,10,10); rect(150,130,10,10); rect(160,140,10,10); rect(70,150,10,10);rect(80,160,10,10);rect(180,160,10,10);
+ rect(190,150,10,10);
+  for (int i = 110; i < 160; i = i+10) {
+  for (int j = 140; j < 190; j = j+10) {
+   rect(i, j,10,10);
+  }
+ }
+  for (int i = 90; i < 110; i = i+10) {
+  for (int j = 150; j < 180; j = j+10) {
+   rect(i, j,10,10);
+   rect(i+70,j,10,10);
+  }
+ }
+  
+  //ROJO
+  //cuerpo
+  
+  fill(23,117,115);
+  rect(100,230,10,10);  rect(160,230,10,10);
+   for (int i = 110; i < 160; i = i+10) {
+  for (int j = 200; j < 250; j = j+10) {
+   rect(i, j,10,10);
+  }
+ } 
+      for (int i = 190; i < 210; i = i+10) {
+  rect(100,i,10,10); 
+  rect(160,i,10,10);
+   } 
+         for (int i = 190; i < 230; i = i+10) {
+  rect(90,i,10,10); 
+  rect(170,i,10,10);
+   } 
+        for (int i = 220; i < 260; i = i+10) {
+  rect(80,i,10,10); 
+  rect(180,i,10,10);
+   } 
+         for (int i = 240; i < 260; i = i+10) {
+  rect(70,i,10,10); 
+  rect(190,i,10,10);
+   } 
+   
+     //pantalones
+  fill(0,51,102);
+  rect(100,250,10,10);   rect(160,250,10,10);
+     for (int i = 110; i < 160; i = i+10) {
+  rect(i,260,10,10); 
+     }
+    rect(110,270,10,10);rect(150,270,10,10);
+  fill(139,87,40);
+    rect(110,280,10,10);rect(150,280,10,10);
+    fill(240);
+  rect(120,210,10,10); rect(130,220,10,10); rect(140,210,10,10);
+  
+  //NEGRO
+  fill(0);
+  rect(130,0,10,10);rect(140,0,10,10);rect(130,10,10,10);rect(140,10,10,10);rect(110,30,10,10);rect(100,30,10,10);rect(90,30,10,10);rect(80,40,10,10);rect(70,50,10,10);
+  rect(60,60,10,10);rect(60,70,10,10);rect(150,20,10,10);rect(150,30,10,10);rect(140,30,10,10);rect(160,30,10,10);rect(170,30,10,10); rect(180,40,10,10);rect(190,50,10,10);
+  rect(200,60,10,10);rect(200,70,10,10);rect(140,110,10,10);rect(150,120,10,10);rect(160,130,10,10);rect(170,140,10,10);rect(180,150,10,10);rect(190,160,10,10);
+  rect(130,120,10,10); rect(120,130,10,10); rect(110,130,10,10); rect(100,140,10,10);rect(90,140,10,10);rect(80,150,10,10);rect(70,160,10,10);rect(70,140,10,10);
+  rect(190,140,10,10);rect(80,170,10,10);rect(90,180,10,10);rect(100,180,10,10); rect(110,190,10,10); rect(120,190,10,10); rect(130,190,10,10); rect(140,190,10,10);
+   rect(150,190,10,10); rect(160,180,10,10); rect(170,180,10,10); rect(180,170,10,10); rect(100,240,10,10); rect(160,240,10,10); rect(110,290,10,10); rect(150,290,10,10);
+   rect(50,250,10,10);rect(210,250,10,10);rect(30,230,10,10);rect(230,230,10,10);
+ for (int i = 80; i < 140; i = i+10) {
+  rect(50,i,10,10);
+  rect(210,i,10,10);
+     }
+  for (int i = 140; i < 190; i = i+10) {
+  rect(60,i,10,10);
+  rect(200,i,10,10);
+     }   
+   for (int i = 200; i < 230; i = i+10) {
+  rect(20,i,10,10);
+  rect(240,i,10,10);
+     } 
+       for (int i = 190; i < 220; i = i+10) {
+  rect(80,i,10,10);
+  rect(180,i,10,10);
+     } 
+      
+       for (int i = 220; i < 250; i = i+10) {
+  rect(40,i,10,10);
+  rect(220,i,10,10);
+     }  
+       
+       for (int i = 240; i < 270; i = i+10) {
+  rect(60,i,10,10);
+  rect(200,i,10,10);
+     }   
+   
+          for (int i = 230; i < 270; i = i+10) {
+  rect(90,i,10,10);
+  rect(170,i,10,10);
+     }   
+           for (int i = 260; i < 290; i = i+10) {
+  rect(100,i,10,10);
+  rect(160,i,10,10);
+     }    
+  for (int i = 270; i < 300; i = i+10) {
+  rect(120,i,10,10);
+  rect(140,i,10,10);
+     } 
+   for (int i = 220; i < 240; i = i+10) {
+  rect(70,i,10,10);
+  rect(190,i,10,10);
+     } 
+     for (int i = 210; i < 230; i = i+10) {
+  rect(100,i,10,10);
+  rect(160,i,10,10);
+     }
+   
+      for (int i = 150; i < 170; i = i+10) {
+  rect(110,i,10,10);
+  rect(150,i,10,10);
+     }
+     
+        for (int i = 0; i < 40; i = i+10) {
+  rect(120,i,10,10);
+     }
+     
+         for (int i = 60; i < 100; i = i+10) {
+  rect(i,260,10,10);
+     }
+              for (int i = 110; i < 160; i = i+10) {
+  rect(i,250,10,10);
+     }
+           for (int i = 170; i < 210; i = i+10) {
+  rect(i,260,10,10);
+     }
+     
+           for (int i = 30; i < 60; i = i+10) {
+  rect(i,190,10,10);
+     }
+     
+            for (int i = 210; i < 240; i = i+10) {
+  rect(i,190,10,10);
+     }
+     popMatrix();
+
+
+    
+    break; 
+    
+         case 3:
+          //WOLVERINE
+   noStroke();
+   translate(100,100);
+   scale(1);
+   //AMARILLO
+   //cabeza
+   fill(255,247,0);
+   rect(150,40,10,10);rect(150,50,10,10);rect(150,60,10,10);rect(160,50,10,10);
+    for (int i = 80; i < 150; i = i+10) {
+     for (int j = 30; j < 100; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+    //cuerpo
+        for (int i = 80; i < 150; i = i+10) {
+     for (int j = 130; j < 170; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+    //pies
+        for (int i = 60; i < 100; i = i+10) {
+     for (int j = 190; j < 220; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+          for (int i = 130; i < 170; i = i+10) {
+     for (int j = 190; j < 220; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+       //DURAZNO
+   fill(253,213,152);
+    for (int i = 100; i < 160; i = i+10) {
+     for (int j = 100; j < 130; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+    for (int i = 30; i < 70; i = i+10) {
+     for (int j = 130; j < 150; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+    for (int i = 160; i < 200; i = i+10) {
+     for (int j = 130; j < 150; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+   //AZUL
+   fill(12,82,246);
+   rect(50,120,10,10);rect(80,120,10,10);rect(80,130,10,10);rect(80,140,10,10);rect(140,140,10,10);rect(150,130,10,10);rect(160,130,10,10);rect(160,120,10,10);rect(170,120,10,10);
+    rect(100,200,10,10); rect(120,200,10,10);
+          for (int i = 30; i < 60; i = i+10) {
+     for (int j = 150; j < 180; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+    for (int i = 170; i < 200; i = i+10) {
+     for (int j = 150; j < 180; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+    for (int i = 20; i < 90; i = i+10) {
+     for (int j = 220; j < 240; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+    for (int i = 140; i < 210; i = i+10) {
+     for (int j = 220; j < 240; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+    for (int i = 60; i < 80; i = i+10) {
+     for (int j = 110; j < 140; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+        for (int i = 80; i < 150; i = i+10) {
+        rect(i, 180,10,10);
+      }
+        for (int i = 90; i < 140; i = i+10) {
+        rect(i, 190,10,10);
+      }
+   //ROJO
+   fill(255,0,0);
+           for (int i = 80; i < 150; i = i+10) {
+        rect(i, 170,10,10);
+      }
+   //BLANCO
+   fill(255);
+    for (int i = 110; i < 140; i = i+10) {
+     for (int j = 80; j < 100; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+        for (int i = 150; i < 170; i = i+10) {
+     for (int j = 80; j < 100; j = j+10) {
+        rect(i, j,10,10);
+     }
+    }
+    //NEGRO
+    //Cabeza
+    fill(0);
+    rect(110,60,10,10);rect(120,60,10,10);rect(110,70,10,10);rect(120,70,10,10);rect(130,70,10,10);rect(130,80,10,10);rect(160,60,10,10);rect(160,70,10,10);rect(150,70,10,10);
+   rect(150,80,10,10);rect(160,20,10,10);rect(160,30,10,10);rect(160,40,10,10);rect(150,30,10,10);rect(160,100,10,10);rect(160,110,10,10);rect(150,120,10,10);
+   for (int i = 10; i < 70; i = i+10) {
+     rect(50, i,10,10);
+   }
+      for (int i = 20; i < 90; i = i+10) {
+     rect(60, i,10,10);
+   }
+      for (int i = 30; i < 110; i = i+10) {
+     rect(70, i,10,10);
+   }
+      for (int i = 40; i < 120; i = i+10) {
+     rect(80, i,10,10);
+   }
+      for (int i = 50; i < 130; i = i+10) {
+     rect(90, i,10,10);
+   }
+      for (int i = 50; i < 100; i = i+10) {
+     rect(100, i,10,10);
+   }
+      for (int i = 10; i < 100; i = i+10) {
+     rect(170, i,10,10);
+   }
+         for (int i = 80; i < 150; i = i+10) {
+     rect(i,20,10,10);
+   }
+            for (int i = 100; i < 150; i = i+10) {
+     rect(i,130,10,10);
+   }
+               for (int i = 110; i < 150; i = i+10) {
+     rect(i,110,10,10);
+   }
+   //cuerpo
+   rect(60,100,10,10);rect(50,110,10,10);rect(40,120,10,10);rect(30,130,10,10);rect(170,110,10,10);rect(180,120,10,10);rect(190,130,10,10);rect(50,150,10,10);rect(170,150,10,10);
+   rect(60,190,10,10); rect(50,200,10,10);rect(50,210,10,10); rect(40,210,10,10);rect(30,220,10,10);rect(20,220,10,10);rect(10,230,10,10);rect(160,190,10,10);
+   rect(170,200,10,10);rect(180,210,10,10);rect(170,210,10,10);rect(200,220,10,10);rect(190,220,10,10);rect(210,230,10,10);rect(110,200,10,10);rect(120,210,10,10);
+   rect(100,210,10,10);rect(90,220,10,10);rect(90,230,10,10);rect(130,220,10,10); rect(110,170,10,10);
+   
+   for (int i = 140; i < 180; i = i+10) {
+     rect(20,i,10,10);
+      rect(200,i,10,10);
+   }
+      for (int i = 150; i < 180; i = i+10) {
+     rect(60,i,10,10);
+     rect(160,i,10,10);
+     
+   }
+      for (int i = 140; i < 190; i = i+10) {
+     rect(70,i,10,10);
+      rect(150,i,10,10);
+   }
+     for (int i = 10; i < 100; i = i+10) {
+     rect(i,240,10,10);
+      
+   }
+    for (int i = 130; i < 220; i = i+10) {
+     rect(i,240,10,10);
+      
+   }
+    for (int i = 30; i < 60; i = i+10) {
+     rect(i,180,10,10);
+      
+   }
+       for (int i = 170; i < 200; i = i+10) {
+     rect(i,180,10,10);
+      
+   }
+    
+
+    break; 
+  
+  
+
+             case 4:
+             pushMatrix();
+  //noStroke();
+ //SONIC
+translate(470,300);
+   scale(.9);
+  
+ 
+  //noStroke();
+  //AZUL
+  fill(0,76,153);
+  //cabeza
+  for (int i = 50; i < 150; i = i+10) {
+  for (int j = 20; j < 130; j = j+10) {
+    rect(i, j,10,10);
+  }
+}
+  for(int i = 150; i < 200; i = i+10){
+    rect(i-10,20,10,10);
+    rect(i-20,30,10,10); rect(i-20,120,10,10);
+    rect(i-30,40,10,10); rect(i-30,80,10,10); rect(i-30,110,10,10);
+    rect(i-40,50,10,10); rect(i-40,70,10,10); rect(i-40,100,10,10);
+    //Cuerpo
+    rect(80,150,10,10); rect(90,210,10,10); rect(90,220,10,10);rect(40,50,10,10);rect(40,60,10,10);rect(40,70,10,10);
+  }
+    //DURAZNO
+    //Cara
+    fill(253,213,152);
+      for (int i = 40; i < 110; i = i+10) {
+    rect(i,110,10,10);  
+  }   
+    for (int i = 50; i < 110; i = i+10) {
+    rect(i,120,10,10);  
+  }   
+    for (int i = 60; i < 100; i = i+10) {
+    rect(i,130,10,10);  
+  }  
+    rect(120,30,10,10);  rect(120,40,10,10);  rect(120,50,10,10);  rect(110,40,10,10); 
+    //Cuerpo
+     rect(60,150,10,10); rect(60,160,10,10); rect(60,170,10,10); rect(70,150,10,10); rect(70,160,10,10);rect(100,140,10,10);rect(110,150,10,10);rect(120,160,10,10);
+     
+     //BLANCO
+     //ojos
+     fill(255);
+      for (int i = 60; i < 120; i = i+10) {
+    rect(70,i,10,10);  rect(80,i,10,10);  
+  } 
+     rect(90,70,10,10);rect(90,80,10,10);rect(90,90,10,10); rect(30,60,10,10); rect(30,70,10,10); rect(40,80,10,10); rect(40,90,10,10);rect(50,100,10,10);rect(60,110,10,10);
+     rect(60,70,10,10);
+      for (int i = 80; i < 120; i = i+10) {
+  for (int j = 160; j < 200; j = j+10) {
+    rect(i, j,10,10);
+  }
+}
+      for (int i = 40; i < 60; i = i+10) {
+  for (int j = 160; j < 190; j = j+10) {
+    rect(i, j,10,10);
+  }
+}
+      for (int i = 60; i < 120; i = i+10) {
+  for (int j = 230; j < 270; j = j+10) {
+    rect(i, j,10,10);
+  }
+}
+
+  //ROJO
+  //zapatos
+  fill(255,0,0);
+  rect(50,240,10,10); rect(60,240,10,10); rect(30,250,10,10);rect(40,250,10,10); rect(30,250,10,10);rect(20,260,10,10);rect(30,260,10,10);rect(50,260,10,10);
+  rect(60,260,10,10);rect(70,260,10,10);rect(80,260,10,10);rect(100,260,10,10); rect(110,260,10,10); rect(120,260,10,10);rect(90,250,10,10);rect(100,250,10,10);
+  rect(110,250,10,10);rect(120,250,10,10);
+  
+  //NEGRO
+  fill(0);
+    for (int i = 80; i < 190; i = i+10) {
+    rect(i,10,10,10);  
+    rect(i+20,130,10,10); 
+  } 
+      for (int i = 10; i < 140; i = i+10) {
+    rect(i,270,10,10);  
+  }
+        for (int i = 10; i < 50; i = i+10) {
+    rect(40,i,10,10);  
+ }
+         for (int i = 170; i < 230; i = i+10) {
+    rect(70,i,10,10);  
+ }
+         for (int i = 190; i < 250; i = i+10) {
+    rect(80,i,10,10);  
+ }
+ rect(60,20,10,10); rect(70,20,10,10); rect(50,10,10,10); rect(30,50,10,10);rect(60,80,10,10); rect(60,90,10,10);rect(60,100,10,10); rect(30,80,10,10);rect(30,90,10,10);
+ rect(30,100,10,10);rect(30,110,10,10);rect(20,100,10,10);rect(40,100,10,10);rect(40,120,10,10);rect(50,130,10,10);rect(60,140,10,10);rect(70,140,10,10);rect(80,140,10,10);
+ rect(90,140,10,10);rect(90,150,10,10);rect(100,150,10,10); rect(40,150,10,10);rect(50,150,10,10);rect(30,160,10,10);rect(30,170,10,10);rect(40,180,10,10);rect(50,170,10,10);
+ rect(50,160,10,10);rect(60,180,10,10);rect(70,170,10,10);rect(80,160,10,10);rect(50,190,10,10);rect(60,190,10,10);rect(110,140,10,10);rect(120,150,10,10);rect(130,160,10,10);
+ rect(130,170,10,10);rect(120,170,10,10);rect(110,160,10,10);rect(120,180,10,10);rect(110,190,10,10); rect(100,200,10,10);rect(100,210,10,10);rect(100,220,10,10);
+ rect(110,220,10,10);rect(120,230,10,10);rect(120,240,10,10);rect(130,240,10,10);rect(130,250,10,10);rect(130,260,10,10);rect(130,270,10,10);rect(90,200,10,10);
+ rect(60,220,10,10);rect(50,230,10,10);rect(40,240,10,10); rect(30,240,10,10);rect(20,250,10,10);rect(10,260,10,10);rect(40,260,10,10);rect(50,250,10,10);rect(60,250,10,10);
+ rect(70,240,10,10);rect(160,100,10,10);rect(180,120,10,10);rect(70,240,10,10);rect(160,70,10,10);rect(150,60,10,10);rect(160,50,10,10);rect(170,40,10,10);rect(180,30,10,10);
+ rect(190,20,10,10);
+          for (int i = 150; i < 200; i = i+10) {
+    rect(i,90,10,10);  
+ }
+           for (int i = 80; i < 120; i = i+10) {
+    rect(170,i,10,10);  
+ }
+            for (int i = 30; i < 60; i = i+10) {
+    rect(130,i,10,10);  
+ }
+ popMatrix();
+    break; 
+    
+    
+  
+  }
+  
+}
+
+}
